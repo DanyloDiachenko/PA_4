@@ -1,0 +1,145 @@
+:root {
+  --primary: #4a90e2;
+  --success: #2ecc71;
+  --warning: #f1c40f;
+  --danger: #e74c3c;
+  --info: #3498db;
+  --secondary: #95a5a6;
+  --dark: #2c3e50;
+  --light: #ecf0f1;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7f6;
+  margin: 0;
+  padding: 20px;
+  color: var(--dark);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-top: 0;
+  border-bottom: 2px solid var(--light);
+  padding-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.button-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  transition: opacity 0.2s;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+}
+.btn-success {
+  background-color: var(--success);
+}
+.btn-warning {
+  background-color: var(--warning);
+}
+.btn-danger {
+  background-color: var(--danger);
+}
+.btn-info {
+  background-color: var(--info);
+  width: 100%;
+  margin-bottom: 10px;
+}
+.btn-secondary {
+  background-color: var(--secondary);
+  width: 100%;
+}
+
+.result-box {
+  margin-top: 15px;
+  padding: 10px;
+  background: var(--light);
+  border-radius: 4px;
+  min-height: 40px;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+}
+
+.visual-container {
+  height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  background: #fafafa;
+  padding: 5px;
+  font-family: monospace;
+}
+
+.index-item {
+  padding: 2px 5px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+}
+
+.index-item:hover {
+  background-color: #e8f0fe;
+}
+
+.index-item.highlight {
+  background-color: var(--warning);
+  font-weight: bold;
+}
+
+.file-visual h3 {
+  font-size: 1rem;
+  margin: 10px 0 5px;
+}

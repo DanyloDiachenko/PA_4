@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple DBMS</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Simple DBMS (Dense Index + Overflow)</h1>
+      </header>
+
+      <div class="main-content">
+        <div class="controls-panel">
+          <div class="card">
+            <h2>Operations</h2>
+            <div class="form-group">
+              <input type="number" id="keyInput" placeholder="Key (Integer)" />
+              <input type="text" id="valueInput" placeholder="Value (String)" />
+            </div>
+            <div class="button-group">
+              <button onclick="searchRecord()" class="btn btn-primary">
+                Search
+              </button>
+              <button onclick="insertRecord()" class="btn btn-success">
+                Add
+              </button>
+              <button onclick="updateRecord()" class="btn btn-warning">
+                Edit
+              </button>
+              <button onclick="deleteRecord()" class="btn btn-danger">
+                Delete
+              </button>
+            </div>
+            <div id="operationResult" class="result-box"></div>
+          </div>
+
+          <div class="card">
+            <h2>Experiments</h2>
+            <button onclick="resetDB()" class="btn btn-info">
+              Generate 10k Records
+            </button>
+            <button onclick="runBenchmark()" class="btn btn-secondary">
+              Run Benchmark (25 Searches)
+            </button>
+            <div id="benchmarkResult" class="result-box"></div>
+          </div>
+        </div>
+
+        <div class="visualization-panel">
+          <div class="card">
+            <h2>Index Structure (Memory)</h2>
+            <div class="visual-container" id="indexVisual"></div>
+          </div>
+          <div class="card">
+            <h2>File Storage</h2>
+            <div class="file-visual">
+              <h3>Main File (Sorted)</h3>
+              <div class="visual-container" id="mainFileVisual"></div>
+            </div>
+            <div class="file-visual">
+              <h3>Overflow File (Unsorted)</h3>
+              <div class="visual-container" id="overflowFileVisual"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
