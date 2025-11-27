@@ -27,7 +27,6 @@ async function fetchIndex() {
 function renderVisualization() {
     indexVisual.innerHTML = '';
     
-    let itemsToShow = currentIndexData;
     const MAX_ITEMS = 500;
     
     const fragment = document.createDocumentFragment();

@@ -1,18 +1,42 @@
-# Simple DBMS with Dense Index and Overflow Area
+# Проста СУБД із Щільним Індексом та Областю Переповнення
 
-This project implements a simple Database Management System (DBMS) with a Graphical User Interface (GUI). It uses a **Dense Index** combined with an **Overflow Area** to manage data stored in physical files.
+Цей проєкт реалізує просту Систему Керування Базами Даних (СУБД) із Графічним Інтерфейсом Користувача (GUI). Вона використовує **Щільний Індекс** у поєднанні з **Областю Переповнення** для керування даними, що зберігаються у фізичних файлах.
 
-## Features
-- **Physical File Storage**: Data is stored in `db/main.db` (sorted) and `db/overflow.db` (unsorted).
-- **Dense Index**: An in-memory index (persisted to `db/index.json`) maps keys to file locations.
-- **CRUD Operations**: Search, Add, Edit, Delete.
-- **Visualization**: View the structure of the Index and Data files.
-- **Experiments**: Built-in benchmarking tool to verify search performance.
+## Функціональність
+- **Фізичне Зберігання Файлів**: Дані зберігаються у `db/main.db` (відсортовані) та `db/overflow.db` (невідсортовані).
+- **Щільний Індекс**: Індекс у пам'яті (зберігається у `db/index.json`) відображає ключі на розташування у файлах.
+- **CRUD Операції**: Пошук, Додавання, Редагування, Видалення.
+- **Візуалізація**: Перегляд структури Індексу та Файлів даних.
+- **Експерименти**: Вбудований інструмент тестування для перевірки швидкодії пошуку.
 
-## Algorithms & Complexity
+## Алгоритми та Складність
 
-### 1. Search (Key)
-**Pseudocode**:
+### Алгоритм Бінарного Пошуку
+Використовується для знаходження ключа в масиві Індексу, що знаходиться в пам'яті.
+
+**Псевдокод**:
+```text
+function BinarySearch(Index, key):
+    left = 0
+    right = length(Index) - 1
+    
+    while left <= right:
+        mid = floor((left + right) / 2)
+        if Index[mid].key == key:
+            return Index[mid]
+        else if Index[mid].key < key:
+            left = mid + 1
+        else:
+            right = mid - 1
+            
+    return null
+```
+**Складність**: $O(\log N)$
+
+Бінарний пошук є високоефективним алгоритмом для знаходження елемента у відсортованому масиві, оскільки він ділить область пошуку навпіл на кожному кроці. Початкова складність алгоритму становить $O(\log N)$, де $N$ — це кількість записів у індексному масиві. Це означає, що навіть при значному збільшенні кількості даних, час пошуку зростає дуже повільно, що робить його ідеальним для великих баз даних. Наприклад, для пошуку серед 10 000 записів знадобиться не більше 14 порівнянь ($\log_2 10000 \approx 13.29$). Кожна ітерація циклу зменшує діапазон можливих значень вдвічі, відкидаючи половину масиву, де шуканий елемент точно не може знаходитись. Така логарифмічна залежність забезпечує стабільну та швидку роботу системи навіть при мільйонах записів, на відміну від лінійного пошуку $O(N)$.
+
+### 1. Пошук (Search)
+**Псевдокод**:
 ```text
 function Search(key):
     indexEntry = BinarySearch(Index, key)
@@ -24,12 +48,12 @@ function Search(key):
     record = Read(file, RecordSize)
     return record
 ```
-**Complexity**: $O(\log N)$
-- Binary search on the index takes logarithmic time.
-- File access is $O(1)$ (Direct Access).
+**Складність**: $O(\log N)$
+- Бінарний пошук по індексу займає логарифмічний час.
+- Доступ до файлу займає $O(1)$ (Прямий Доступ).
 
-### 2. Add (Key, Value)
-**Pseudocode**:
+### 2. Додавання (Add)
+**Псевдокод**:
 ```text
 function Add(key, value):
     if Search(key) is found:
@@ -43,12 +67,12 @@ function Add(key, value):
     InsertIntoSortedArray(Index, newEntry)
     SaveIndex()
 ```
-**Complexity**: $O(N)$
-- Appending to file is $O(1)$.
-- Inserting into the sorted Index array requires shifting elements, which is $O(N)$.
+**Складність**: $O(N)$
+- Додавання в кінець файлу займає $O(1)$.
+- Вставка у відсортований масив Індексу вимагає зсуву елементів, що займає $O(N)$.
 
-### 3. Delete (Key)
-**Pseudocode**:
+### 3. Видалення (Delete)
+**Псевдокод**:
 ```text
 function Delete(key):
     indexPos = BinarySearchIndex(Index, key)
@@ -58,12 +82,12 @@ function Delete(key):
     RemoveAt(Index, indexPos)
     SaveIndex()
 ```
-**Complexity**: $O(N)$
-- Removing from an array requires shifting elements, which is $O(N)$.
-- The data remains in the file (marked as deleted implicitly by absence from index).
+**Складність**: $O(N)$
+- Видалення з масиву вимагає зсуву елементів, що займає $O(N)$.
+- Дані залишаються у файлі (помічаються як видалені неявно через відсутність в індексі).
 
-### 4. Edit (Key, NewValue)
-**Pseudocode**:
+### 4. Редагування (Edit)
+**Псевдокод**:
 ```text
 function Edit(key, newValue):
     indexEntry = BinarySearch(Index, key)
@@ -74,51 +98,51 @@ function Edit(key, newValue):
     file = Open(indexEntry.file)
     Write(file, record, indexEntry.offset)
 ```
-**Complexity**: $O(\log N)$
-- Search is $O(\log N)$.
-- Overwriting the record is $O(1)$.
+**Складність**: $O(\log N)$
+- Пошук займає $O(\log N)$.
+- Перезапис запису займає $O(1)$.
 
-## Experimental Results
+## Експериментальні Результати
 
-**Setup**:
-- Database populated with **10,000** random unique records.
-- Records sorted and stored in `main.db`.
-- **25** random searches performed.
+**Налаштування**:
+- База даних заповнена **10,000** випадковими унікальними записами.
+- Записи відсортовані та збережені у `main.db`.
+- Виконано **25** випадкових пошуків.
 
-**Results**:
-- **Average Comparisons**: 12.0
-- **Theoretical Expectation**: $\log_2(10000) \approx 13.29$.
-- The experimental result aligns perfectly with the theoretical binary search complexity.
+**Результати**:
+- **Середня кількість порівнянь**: 12.0
+- **Теоретичне очікування**: $\log_2(10000) \approx 13.29$.
+- Експериментальний результат ідеально узгоджується з теоретичною складністю бінарного пошуку.
 
-**Sample Data**:
-| Key | Comparisons |
+**Приклад Даних**:
+| Ключ | Порівняння |
 |-----|-------------|
 | 22126 | 5 |
 | 23484 | 13 |
 | 2523 | 12 |
 | ... | ... |
 
-## Conclusions
-The implementation successfully demonstrates the efficiency of a Dense Index structure. 
-- **Search** operations are extremely fast ($O(\log N)$) due to the binary search on the index and direct file access.
-- **Insertions** are handled via an Overflow area, avoiding the need to rewrite the entire sorted main file. However, maintaining the sorted in-memory index incurs an $O(N)$ cost, which is acceptable for this scale but would require B-Trees for larger systems.
-- **Visualization** helps understand how the index maps logical keys to physical file offsets.
+## Висновки
+Реалізація успішно демонструє ефективність структури Щільного Індексу.
+- **Операції Пошуку** є надзвичайно швидкими ($O(\log N)$) завдяки бінарному пошуку по індексу та прямому доступу до файлів.
+- **Вставки** обробляються через Область Переповнення, уникаючи необхідності перезаписувати весь відсортований основний файл. Однак підтримка відсортованого індексу в пам'яті створює витрати $O(N)$, що є прийнятним для такого масштабу, але вимагало б B-дерев для більших систем.
+- **Візуалізація** допомагає зрозуміти, як індекс відображає логічні ключі на фізичні зміщення у файлах.
 
-## How to Run
+## Як Запустити
 
-1. **Install Dependencies**:
+1. **Встановити Залежності**:
    ```bash
    npm install
    ```
 
-2. **Start Server**:
+2. **Запустити Сервер**:
    ```bash
    npm start
    ```
 
-3. **Open GUI**:
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+3. **Відкрити GUI**:
+   Відкрийте [http://localhost:3000](http://localhost:3000) у вашому браузері.
 
-4. **Usage**:
-   - Use the **Operations** panel to manage records.
-   - Use the **Experiments** panel to generate data and run benchmarks.
+4. **Використання**:
+   - Використовуйте панель **Operations** для керування записами.
+   - Використовуйте панель **Experiments** для генерації даних та запуску тестів.
